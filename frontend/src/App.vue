@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 
 const ticketData=ref({
   title: '',
@@ -8,6 +8,23 @@ const ticketData=ref({
 });
 
 const statusMessage = ref('');
+
+const ticketsList = ref<any[]>([]);
+
+const fetchTickets =async () => {
+  try {
+    const response = await fetch('http://localhost:3000/tickets');
+    if (response.ok) {
+      ticketsList.value= await response.json();
+    }
+  } catch (error) {
+    console.error("Błąd pobierania listy zgłoszeń:", error);
+  }
+};
+
+onMounted(() => {
+  fetchTickets();
+});
 
 const submitForm = async () => {
   try {
@@ -19,6 +36,7 @@ const submitForm = async () => {
     if (response.ok) {
       statusMessage.value = 'sukces';
       ticketData.value= { title: '', description: '', isDIY: false };
+      fetchTickets();
     }
   } catch(error) {
     statusMessage.value="błąd";
@@ -51,6 +69,19 @@ const submitForm = async () => {
       <button type="submit">Wyślij zgłoszenie</button>
       <p v-if="statusMessage">{{ statusMessage }}</p>
     </form>
+
+    <hr class="divider" />
+    
+    <h2> Ostatnie Zgłoszenia </h2>
+
+    <p v-if="ticketsList.length === 0">Brak zgłoszeń w bazie</p>
+
+    <div class="tickets-container" v-else>
+      <div v-for="ticket in ticketsList" :key="ticket._id" class="ticket-card">
+        // tttttt
+      </div>
+
+    </div>
   </main>
 </template>
 
