@@ -16,8 +16,8 @@ export class TicketsService {
     return await createdTicket.save();
   }
 
-  findAll() {
-    return `This action returns all tickets`;
+  async findAll(): Promise<Ticket[]> {
+    return await this.ticketModel.find().exec()
   }
 
   findOne(id: number) {

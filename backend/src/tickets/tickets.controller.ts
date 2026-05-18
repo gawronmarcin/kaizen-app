@@ -1,4 +1,4 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, Get } from '@nestjs/common';
 import { TicketsService } from './tickets.service';
 import { CreateTicketDto } from './dto/create-ticket.dto';
 
@@ -12,4 +12,8 @@ export class TicketsController {
     return this.ticketsService.create(createTicketDto);
   }
 
+  @Get()
+  findall() {
+    return this.ticketsService.findAll();
+  }
 }
