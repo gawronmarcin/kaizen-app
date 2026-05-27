@@ -20,15 +20,15 @@ export class TicketsService {
     return await this.ticketModel.find().exec()
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} ticket`;
+  async updateStatus(id: string, newStatus: string): Promise<Ticket | null> {
+  return await this.ticketModel.findByIdAndUpdate(
+    id,
+    {status: newStatus},
+    {new: true}
+  ).exec();
   }
 
-  update(id: number, updateTicketDto: UpdateTicketDto) {
-    return `This action updates a #${id} ticket`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} ticket`;
+  async remove(id: string): Promise<Ticket | null> {
+    return await this.ticketModel.findByIdAndDelete(id).exec();
   }
 }

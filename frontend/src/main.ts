@@ -1,5 +1,9 @@
 import { createApp } from 'vue'
 import App from './App.vue'
+import router from './router'
 
-// Tworzymy aplikację i montujemy ją bezpośrednio w pliku HTML
-createApp(App).mount('#app')
+
+const app = createApp(App)
+
+app.use(router) // <-- Włączamy router w aplikacji
+app.mount('#app')
