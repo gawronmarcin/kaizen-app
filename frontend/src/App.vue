@@ -1,16 +1,48 @@
+<script setup lang="ts">
+import { ref } from 'vue'
+import {useRouter} from 'vue-router';
+
+const router = useRouter();
+
+const userRole = ref(localStorage.getItem('userRole'));
+const userName = ref(localStorage.getItem('userName'));
+
+router.afterEach(() => {
+  userRole.value = localStorage.getItem('userRole');
+  userName.value = localStorage.getItem('userName');
+});
+
+const logout = () => {
+  localStorage.removeItem('userRole');
+  localStorage.removeItem('userName');
+  router.push('/login');
+}
+</script>
+
+
 <template>
-<div class="app-layout">
-  <nav class="top-nav">
-    <div class="logo">System Kaizen</div>
-    <div class="links">
-      <router-link to="/">Panel Pracownika</router-link>
-      <router-link to="manager">Zarządzanie (Menedżet)</router-link>
-    </div>
-  </nav>
-  <main class="content">
-    <router-view></router-view>
-  </main>
-</div>
+  <div class="app-layout">
+    <nav class="top-nav">
+      <div class="logo">System Kaizen</div>
+      
+      <div class="links" v-if="userRole">
+        <router-link to="/">Panel Pracownika</router-link>
+        
+        <router-link v-if="userRole === 'MANAGER'" to="/manager">
+          Zarządzanie (Menedżer)
+        </router-link>
+      </div>
+
+      <div class="user-panel" v-if="userRole">
+        <span class="greeting">Cześć, {{ userName }}</span>
+        <button @click="logout" class="btn-logout">Wyloguj</button>
+      </div>
+    </nav>
+
+    <main class="content">
+      <router-view></router-view>
+    </main>
+  </div>
 </template>
 
 <style>

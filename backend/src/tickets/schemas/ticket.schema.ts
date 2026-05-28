@@ -8,6 +8,9 @@ export class Ticket{
     @Prop({required:true})
     title!:string;
 
+    @Prop({required:true})
+    author!:string;
+
     @Prop()
     description!: string;
 
